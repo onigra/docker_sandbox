@@ -10,10 +10,13 @@ workflows:
 
 jobs:
   build_and_push:
-    executor: aws-ecr/default
+    docker:
+      - image: circleci/python:3.8
     environment:
       DOCKER_BUILDKIT: "1"
+      AWS_REGION: "ap-northeast-1"
     steps:
+      - checkout
       - setup_remote_docker:
           version: 18.09.3
       - aws-ecr/build-and-push-image:
