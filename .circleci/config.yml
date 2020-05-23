@@ -1,0 +1,22 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@6.8.2
+
+workflows:
+  main:
+    jobs:
+      - build_and_push
+
+jobs:
+  build_and_push:
+    executor: aws-ecr/default
+    environment:
+      DOCKER_BUILDKIT: "1"
+    steps:
+      - setup_remote_docker:
+          version: 18.09.3
+      - aws-ecr/build-and-push-image:
+          repo: docker_sandbox
+          dockerfile: secret/Dockerfile
+          tag: latest
