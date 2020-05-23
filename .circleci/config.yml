@@ -16,10 +16,14 @@ jobs:
       DOCKER_BUILDKIT: "1"
       AWS_REGION: "ap-northeast-1"
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - ${SSH_KEY_FINGERPRINT}
       - checkout
       - setup_remote_docker:
           version: 18.09.3
       - aws-ecr/build-and-push-image:
           repo: docker_sandbox
-          dockerfile: secret/Dockerfile
+          dockerfile: ssh/Dockerfile
+          extra-build-args: "--ssh default"
           tag: latest
